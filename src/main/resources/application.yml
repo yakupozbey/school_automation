@@ -1,0 +1,16 @@
+server:
+  port: 8056
+spring:
+  application:
+    name: schoolAutomation-Ex
+  datasource:
+    url: jdbc:mysql://localhost:3306/school_automation
+    username: root
+    password: Nm47ys97n02
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  main:
+    allow-circular-references: true
