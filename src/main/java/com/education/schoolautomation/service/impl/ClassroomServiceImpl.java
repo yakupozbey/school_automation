@@ -4,6 +4,7 @@ import com.education.schoolautomation.dto.ClassRoomDto;
 import com.education.schoolautomation.entity.ClassRoom;
 import com.education.schoolautomation.repository.ClassRoomRepository;
 import com.education.schoolautomation.service.ClassRoomService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,13 +14,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ClassroomServiceImpl implements ClassRoomService {
-    @Autowired
-    private ClassRoomRepository repository;
-    @Autowired
-    private SchoolServiceImpl schoolService;
-    @Autowired
-    private BranchServiceImpl branchService;
+
+    private final ClassRoomRepository repository;
+
+    private final SchoolServiceImpl schoolService;
+
+    private final BranchServiceImpl branchService;
 
     @Transactional
     @Override

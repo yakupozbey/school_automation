@@ -6,7 +6,9 @@ import com.education.schoolautomation.response.BranchResponse;
 import com.education.schoolautomation.service.BranchService;
 import com.education.schoolautomation.service.impl.ClassroomServiceImpl;
 import com.education.schoolautomation.service.impl.TeacherServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,13 +17,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/branches")
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class BranchController {
-    @Autowired
-    private BranchService service;
-    @Autowired
-    private ClassroomServiceImpl classroomService;
-    @Autowired
-    private TeacherServiceImpl teacherService;
+
+    private final BranchService service;
+
+    private final ClassroomServiceImpl classroomService;
+
+    private final TeacherServiceImpl teacherService;
 
 
     @PostMapping

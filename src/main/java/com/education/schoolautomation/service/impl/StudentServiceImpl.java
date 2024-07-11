@@ -5,6 +5,7 @@ import com.education.schoolautomation.dto.StudentDto;
 import com.education.schoolautomation.entity.Student;
 import com.education.schoolautomation.repository.StudentRepository;
 import com.education.schoolautomation.service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
-    @Autowired
-    private StudentRepository repository;
-    @Autowired
-    private LessonServiceImpl lessonService;
+
+    private final StudentRepository repository;
+
+    private final LessonServiceImpl lessonService;
 
     @Override
     public StudentDto create(StudentDto dto) {

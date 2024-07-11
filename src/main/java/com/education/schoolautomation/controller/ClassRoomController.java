@@ -5,7 +5,9 @@ import com.education.schoolautomation.request.ClassRoomRequest;
 import com.education.schoolautomation.response.ClassRoomResponse;
 import com.education.schoolautomation.service.ClassRoomService;
 import com.education.schoolautomation.service.impl.SchoolServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,11 +16,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/class-rooms")
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class ClassRoomController {
-    @Autowired
-    private ClassRoomService service;
-    @Autowired
-    private SchoolServiceImpl schoolService;
+
+    private final ClassRoomService service;
+
+    private final SchoolServiceImpl schoolService;
 
     @PostMapping
     public ClassRoomResponse create(@RequestBody ClassRoomRequest request) {

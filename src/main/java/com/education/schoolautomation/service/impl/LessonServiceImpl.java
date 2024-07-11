@@ -5,7 +5,9 @@ import com.education.schoolautomation.dto.LessonDto;
 import com.education.schoolautomation.entity.Lesson;
 import com.education.schoolautomation.repository.LessonRepository;
 import com.education.schoolautomation.service.LessonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,15 +15,16 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class LessonServiceImpl implements LessonService {
-    @Autowired
-    private LessonRepository repository;
-    @Autowired
-    private TeacherServiceImpl teacherService;
-    @Autowired
-    private BranchServiceImpl branchService;
-    @Autowired
-    private StudentServiceImpl studentService;
+
+    private final LessonRepository repository;
+
+    private final TeacherServiceImpl teacherService;
+
+    private final BranchServiceImpl branchService;
+
+    private final StudentServiceImpl studentService;
 
 
     @Override

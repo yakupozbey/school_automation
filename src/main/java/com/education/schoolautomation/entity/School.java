@@ -21,6 +21,7 @@ public class School {
     private String schoolName;
     private String schoolAddress;
 
+
     @OneToOne(cascade = CascadeType.ALL) //mappedBy school eşliyor.Üzerine tıkla göreceksin.
     @JoinColumn(name = "manager_id", referencedColumnName = "identityId")
     private Manager manager;

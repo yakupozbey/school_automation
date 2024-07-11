@@ -4,7 +4,9 @@ import com.education.schoolautomation.dto.AssistantManagerDto;
 import com.education.schoolautomation.entity.AssistantManager;
 import com.education.schoolautomation.repository.AssistantManagerRepository;
 import com.education.schoolautomation.service.AssistantManagerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,11 +15,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class AssistantManagerServiceImpl implements AssistantManagerService {
-    @Autowired
-    private AssistantManagerRepository repository;
-    @Autowired
-    private SchoolServiceImpl schoolService;
+
+    private final AssistantManagerRepository repository;
+
+    private final SchoolServiceImpl schoolService;
 
     @Transactional
     @Override
@@ -63,8 +66,9 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
         dto.setPhoneNumber(entity.getPhoneNumber());
         dto.setAddress(entity.getAddress());
         dto.setSsn(entity.getSsn());
-        dto.setSalary(entity.getSalary());
         dto.setSchool(schoolService.toDto(entity.getSchool()));
+        dto.setSalary(entity.getSalary());
+
         return dto;
     }
 

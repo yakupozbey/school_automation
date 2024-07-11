@@ -5,17 +5,18 @@ import com.education.schoolautomation.entity.Manager;
 import com.education.schoolautomation.exception.RecordNotFoundExceptions;
 import com.education.schoolautomation.repository.ManagerRepository;
 import com.education.schoolautomation.service.ManagerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ManagerServiceImpl implements ManagerService {
-    @Autowired
-    private ManagerRepository repository;
+
+    private final ManagerRepository repository;
 
     @Override
     @Transactional
@@ -29,10 +30,26 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
+    public ManagerDto update(UUID managerId, ManagerDto dto) {
+        Manager exitManager= repository.findByIdentityId(managerId);
+        exitManager.setFullName(dto.getFullName());
+        exitManager.setTckn(dto.getTckn());
+        exitManager.setAge(dto.getAge());
+        exitManager.setPhoneNumber(dto.getPhoneNumber());
+        exitManager.setAddress(dto.getAddress());
+        exitManager.setSsn(dto.getSsn());
+        exitManager.setSalary(dto.getSalary());
+        exitManager= repository.save(exitManager);
+        return toDto(exitManager);
+    }
+
+
+    @Override
     public ManagerDto get(UUID managerId) {
         return toDto(repository.findById(managerId)
                 .orElseThrow(() -> new RecordNotFoundExceptions(4001, "Manager not found")));
     }
+
 
 
     public ManagerDto getById(UUID managerId) {

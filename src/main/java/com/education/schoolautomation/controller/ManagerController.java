@@ -4,6 +4,7 @@ import com.education.schoolautomation.dto.ManagerDto;
 import com.education.schoolautomation.request.ManagerRequest;
 import com.education.schoolautomation.response.ManagerResponse;
 import com.education.schoolautomation.service.ManagerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +13,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/managers")
+@RequiredArgsConstructor
 public class ManagerController {
-    @Autowired
-    private ManagerService service;
+
+    private final ManagerService service;
 
     @PostMapping
     public ManagerResponse create(@RequestBody ManagerRequest request) {
@@ -24,6 +26,11 @@ public class ManagerController {
     @DeleteMapping
     public void delete(@RequestParam(value = "managerId") UUID managerId) {
         service.delete(managerId);
+    }
+
+    @PutMapping
+    public ManagerResponse update(@RequestParam(value = "managerId") UUID managerId, @RequestBody ManagerRequest request){
+        return toResponse(service.update(managerId, toDto(request)));
     }
 
     @GetMapping

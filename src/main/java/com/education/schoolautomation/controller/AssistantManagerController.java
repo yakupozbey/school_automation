@@ -1,10 +1,11 @@
 package com.education.schoolautomation.controller;
 
 import com.education.schoolautomation.dto.AssistantManagerDto;
+import com.education.schoolautomation.dto.SchoolDto;
 import com.education.schoolautomation.request.AssistantManagerRequest;
 import com.education.schoolautomation.response.AssistantManagerResponse;
 import com.education.schoolautomation.service.AssistantManagerService;
-import com.education.schoolautomation.service.impl.SchoolServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +15,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/assistant_managers")
+@RequiredArgsConstructor
 public class AssistantManagerController {
-    @Autowired
-    private AssistantManagerService service;
-    @Autowired
-    private SchoolServiceImpl schoolService;
+
+    private final AssistantManagerService service;
 
 
     @PostMapping
@@ -65,8 +65,7 @@ public class AssistantManagerController {
         dto.setAddress(request.getAddress());
         dto.setSsn(request.getSsn());
         dto.setSalary(request.getSalary());
-        //dto.setSchool(new SchoolDto(request.getSchoolId()));
-        dto.setSchool(schoolService.getById(request.getSchoolId()));
+        dto.setSchool(SchoolDto.builder().schoolId(request.getSchoolId()).build());
         return dto;
     }
 }
