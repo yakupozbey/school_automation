@@ -2,6 +2,7 @@ package com.education.schoolautomation.service.impl;
 
 import com.education.schoolautomation.dto.AssistantManagerDto;
 import com.education.schoolautomation.entity.AssistantManager;
+import com.education.schoolautomation.exception.RecordNotFoundExceptions;
 import com.education.schoolautomation.repository.AssistantManagerRepository;
 import com.education.schoolautomation.service.AssistantManagerService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,26 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
     }
 
     @Override
+    public AssistantManagerDto update(UUID assistantManagerId, AssistantManagerDto dto) {
+        AssistantManager exitAssistantManager = repository.findById(assistantManagerId)
+                .orElseThrow(() -> new RecordNotFoundExceptions(4001, "AssistantManager not found"));
+        exitAssistantManager.setFullName(dto.getFullName());
+        exitAssistantManager.setTckn(dto.getTckn());
+        exitAssistantManager.setAge(dto.getAge());
+        exitAssistantManager.setPhoneNumber(dto.getPhoneNumber());
+        exitAssistantManager.setAddress(dto.getAddress());
+        exitAssistantManager.setSsn(dto.getSsn());
+        exitAssistantManager.setSalary(dto.getSalary());
+        exitAssistantManager.setSchool(schoolService.toEntity(dto.getSchool()));
+        exitAssistantManager= repository.save(exitAssistantManager);
+        return toDto(exitAssistantManager);
+    }
+
+    @Override
     public List<AssistantManagerDto> getAll() {
         return toDtoList(repository.findAll());
     }
+
 
     public AssistantManagerDto getById(UUID assistantManagerId) {
         return toDto(repository.findById(assistantManagerId).get());
@@ -68,7 +86,6 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
         dto.setSsn(entity.getSsn());
         dto.setSchool(schoolService.toDto(entity.getSchool()));
         dto.setSalary(entity.getSalary());
-
         return dto;
     }
 

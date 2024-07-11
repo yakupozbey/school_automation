@@ -2,10 +2,10 @@ package com.education.schoolautomation.service.impl;
 
 import com.education.schoolautomation.dto.ClassRoomDto;
 import com.education.schoolautomation.entity.ClassRoom;
+import com.education.schoolautomation.entity.School;
 import com.education.schoolautomation.repository.ClassRoomRepository;
 import com.education.schoolautomation.service.ClassRoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,14 +40,24 @@ public class ClassroomServiceImpl implements ClassRoomService {
         return toDtoList(repository.findAll());
     }
 
+    @Override
+    public ClassRoomDto update(UUID classRoomId, ClassRoomDto dto) {
+        ClassRoom exitClassRoom = repository.findByClassRoomId(classRoomId);
+        exitClassRoom.setClassRoomName(dto.getClassRoomName());
+        exitClassRoom.setSchool(School.builder().schoolId(dto.getSchoolId()).build());
+        exitClassRoom.setBranches(branchService.toEntityList(dto.getBranches()));
+        exitClassRoom= repository.save(exitClassRoom);
+        return toDto(exitClassRoom);
+    }
+
 
     @Transactional
     public ClassRoomDto getById(UUID classRoomId) {
         return toDto(findById(classRoomId));
     }
 
-    public ClassRoom findById(UUID schoolId) {
-        return repository.findByClassRoomId(schoolId);
+    public ClassRoom findById(UUID classRoomId) {
+        return repository.findByClassRoomId(classRoomId);
     }
 
 

@@ -7,7 +7,6 @@ import com.education.schoolautomation.exception.RecordNotFoundExceptions;
 import com.education.schoolautomation.repository.SchoolRepository;
 import com.education.schoolautomation.service.SchoolService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +18,8 @@ import java.util.UUID;
 public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolRepository repository;
-
     private final ManagerServiceImpl managerService;
-
     private final AssistantManagerServiceImpl assistantManagerService;
-
     private final ClassroomServiceImpl classroomService;
 
 
@@ -79,6 +75,7 @@ public class SchoolServiceImpl implements SchoolService {
             dto.setManager(managerService.toDto(entity.getManager()));
         }
 
+        //dto.setClassRooms(classroomService.toDtoList(entity.getClassRooms()));
 
         if (entity.getClassRooms() != null) {
             dto.setClassRooms(classroomService.toDtoList(entity.getClassRooms()));
@@ -95,7 +92,6 @@ public class SchoolServiceImpl implements SchoolService {
         dto.setSchoolAddress(entity.getSchoolAddress());
         return dto;
     }
-
 
 
     public School toEntity(SchoolDto dto) {
