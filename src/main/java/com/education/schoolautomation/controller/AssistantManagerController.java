@@ -31,6 +31,11 @@ public class AssistantManagerController {
         service.delete(assistantManagerId);
     }
 
+    @PutMapping
+    public AssistantManagerResponse update(@RequestParam(value = "assistantManagerId") UUID assistantManagerId, @RequestBody AssistantManagerRequest request){
+        return toResponse(service.update(assistantManagerId, toDto(request)));
+    }
+
     @GetMapping
     public List<AssistantManagerResponse> getAll() {
         return toResponseList(service.getAll());

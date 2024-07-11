@@ -33,6 +33,11 @@ public class ClassRoomController {
         service.delete(classRoomId);
     }
 
+    @PutMapping
+    public ClassRoomResponse update(@RequestParam(value = "classRoomId") UUID classRoomId, @RequestBody ClassRoomRequest request){
+        return toResponse(service.update(classRoomId, toDto(request)));
+    }
+
     @GetMapping
     public List<ClassRoomResponse> getAll() {
         return toResponseList(service.getAll());
