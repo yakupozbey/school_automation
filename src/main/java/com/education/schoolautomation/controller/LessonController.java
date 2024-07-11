@@ -7,7 +7,9 @@ import com.education.schoolautomation.service.LessonService;
 import com.education.schoolautomation.service.impl.BranchServiceImpl;
 import com.education.schoolautomation.service.impl.StudentServiceImpl;
 import com.education.schoolautomation.service.impl.TeacherServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,15 +18,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/lessons")
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class LessonController {
-    @Autowired
-    private LessonService service;
-    @Autowired
-    private BranchServiceImpl branchService;
-    @Autowired
-    private TeacherServiceImpl teacherService;
-    @Autowired
-    private StudentServiceImpl studentService;
+
+    private final LessonService service;
+
+    private final BranchServiceImpl branchService;
+
+    private final TeacherServiceImpl teacherService;
+
+    private final StudentServiceImpl studentService;
 
 
     @PostMapping

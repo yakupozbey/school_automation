@@ -10,4 +10,6 @@ public interface SchoolService {
     void delete(UUID schoolId);
 
     SchoolDto get(UUID schoolId);
+
+    SchoolDto update(UUID schoolId, SchoolDto dto);
 }

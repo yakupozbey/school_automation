@@ -4,7 +4,9 @@ import com.education.schoolautomation.dto.BranchDto;
 import com.education.schoolautomation.entity.Branch;
 import com.education.schoolautomation.repository.BranchRepository;
 import com.education.schoolautomation.service.BranchService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,15 +15,16 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class BranchServiceImpl implements BranchService {
-    @Autowired
-    private BranchRepository repository;
-    @Autowired
-    private ClassroomServiceImpl classroomService;
-    @Autowired
-    private TeacherServiceImpl teacherService;
-    @Autowired
-    private LessonServiceImpl lessonService;
+
+    private final BranchRepository repository;
+
+    private final ClassroomServiceImpl classroomService;
+
+    private final TeacherServiceImpl teacherService;
+
+    private final LessonServiceImpl lessonService;
 
     @Override
     @Transactional

@@ -3,8 +3,10 @@ package com.education.schoolautomation.service.impl;
 
 import com.education.schoolautomation.dto.TeacherDto;
 import com.education.schoolautomation.entity.Teacher;
+import com.education.schoolautomation.exception.RecordNotFoundExceptions;
 import com.education.schoolautomation.repository.TeacherRepository;
 import com.education.schoolautomation.service.TeacherService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +16,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TeacherServiceImpl implements TeacherService {
-    @Autowired
-    private TeacherRepository repository;
+
+    private final TeacherRepository repository;
 
     @Override
     @Transactional
@@ -31,9 +34,25 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public TeacherDto update(UUID teacherId, TeacherDto dto) {
+        Teacher exitTeacher= repository.findById(teacherId).orElseThrow(() -> new RecordNotFoundExceptions(4001, "User not found"));
+        exitTeacher.setFullName(dto.getFullName());
+        exitTeacher.setTckn(dto.getTckn());
+        exitTeacher.setAge(dto.getAge());
+        exitTeacher.setPhoneNumber(dto.getPhoneNumber());
+        exitTeacher.setAddress(dto.getAddress());
+        exitTeacher.setSsn(dto.getSsn());
+        exitTeacher.setSalary(dto.getSalary());
+        exitTeacher= repository.save(exitTeacher);
+        return toDto(exitTeacher);
+    }
+
+    @Override
     public List<TeacherDto> getAll() {
         return toDtoList(repository.findAll());
     }
+
+
 
     @Transactional
     public TeacherDto getById(UUID teacherId) {

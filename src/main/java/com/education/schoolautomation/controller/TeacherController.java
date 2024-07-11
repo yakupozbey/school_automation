@@ -4,6 +4,7 @@ import com.education.schoolautomation.dto.TeacherDto;
 import com.education.schoolautomation.request.TeacherRequest;
 import com.education.schoolautomation.response.TeacherResponse;
 import com.education.schoolautomation.service.TeacherService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +14,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/teachers")
+@RequiredArgsConstructor
 public class TeacherController {
-    @Autowired
-    private TeacherService service;
+
+    private final TeacherService service;
 
     @PostMapping
     public TeacherResponse create(@RequestBody TeacherRequest request) {
@@ -25,6 +27,11 @@ public class TeacherController {
     @DeleteMapping
     public void delete(@RequestParam(value = "teacherId") UUID teacherId) {
         service.delete(teacherId);
+    }
+
+    @PutMapping("/{teacherId}")
+    public TeacherResponse update(@PathVariable(name = "teacherId") UUID teacherId, @RequestBody TeacherRequest request){
+        return toResponse(service.update(teacherId, toDto(request)));
     }
 
     @GetMapping

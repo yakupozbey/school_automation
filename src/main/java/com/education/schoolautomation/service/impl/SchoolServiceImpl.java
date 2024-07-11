@@ -6,22 +6,25 @@ import com.education.schoolautomation.entity.School;
 import com.education.schoolautomation.exception.RecordNotFoundExceptions;
 import com.education.schoolautomation.repository.SchoolRepository;
 import com.education.schoolautomation.service.SchoolService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class SchoolServiceImpl implements SchoolService {
-    @Autowired
-    private SchoolRepository repository;
-    @Autowired
-    private ManagerServiceImpl managerService;
-    @Autowired
-    private AssistantManagerServiceImpl assistantManagerService;
-    @Autowired
-    private ClassroomServiceImpl classroomService;
+
+    private final SchoolRepository repository;
+
+    private final ManagerServiceImpl managerService;
+
+    private final AssistantManagerServiceImpl assistantManagerService;
+
+    private final ClassroomServiceImpl classroomService;
 
 
     @Transactional
@@ -34,6 +37,18 @@ public class SchoolServiceImpl implements SchoolService {
     @Transactional
     public void delete(UUID schoolId) {
         repository.deleteById(schoolId);
+    }
+
+    @Override
+    public SchoolDto update(UUID schoolId, SchoolDto dto) {
+        School exitSchool = repository.findBySchoolId(schoolId);
+        exitSchool.setSchoolType(dto.getSchoolType());
+        exitSchool.setSchoolName(dto.getSchoolName());
+        exitSchool.setSchoolAddress(dto.getSchoolAddress());
+        exitSchool.setAssistantManagers(assistantManagerService.toEntityList(dto.getAssistantManagers()));
+        exitSchool.setClassRooms(classroomService.toEntityList(dto.getClassRooms()));
+        exitSchool = repository.save(exitSchool);
+        return toDtoSecond(exitSchool);
     }
 
     @Override
@@ -61,30 +76,40 @@ public class SchoolServiceImpl implements SchoolService {
         dto.setSchoolAddress(entity.getSchoolAddress());
 
         if (entity.getManager() != null) {
-            dto.setManagerId(entity.getManager().getIdentityId());
+            dto.setManager(managerService.toDto(entity.getManager()));
         }
-        if (entity.getAssistantManagers() != null) {
-            dto.setAssistantManagers(assistantManagerService.toDtoList(entity.getAssistantManagers()));
-        }
+
+
         if (entity.getClassRooms() != null) {
             dto.setClassRooms(classroomService.toDtoList(entity.getClassRooms()));
         }
 
-
         return dto;
     }
+
+    public SchoolDto toDtoSecond(School entity) {
+        SchoolDto dto = new SchoolDto();
+        dto.setSchoolId(entity.getSchoolId());
+        dto.setSchoolType(entity.getSchoolType());
+        dto.setSchoolName(entity.getSchoolName());
+        dto.setSchoolAddress(entity.getSchoolAddress());
+        return dto;
+    }
+
+
 
     public School toEntity(SchoolDto dto) {
         School entity = new School();
         entity.setSchoolType(dto.getSchoolType());
         entity.setSchoolName(dto.getSchoolName());
         entity.setSchoolAddress(dto.getSchoolAddress());
-
+        entity.setManager(managerService.findById(dto.getManager().getManagerId()));
+/*
         if (dto.getSchoolId() != null) {
-            entity.setManager(managerService.findById(dto.getManagerId()));
+            entity.setManager(managerService.findById(dto.getManager().getManagerId()));
         }
 
-        /*
+
         if (dto.getAssistantManagers() != null) {
             entity.setAssistantManagers(assistantManagerService.toEntityList(dto.getAssistantManagers()));
         }
