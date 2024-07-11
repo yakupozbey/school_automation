@@ -6,21 +6,33 @@ import com.education.schoolautomation.dto.SchoolDto;
 import com.education.schoolautomation.request.SchoolRequest;
 import com.education.schoolautomation.response.SchoolResponse;
 import com.education.schoolautomation.service.SchoolService;
+import com.education.schoolautomation.service.impl.ManagerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/schools")
 public class SchoolController {
     @Autowired
     private SchoolService service;
+    @Autowired
+    private ManagerServiceImpl managerService;
 
     @PostMapping
     public SchoolResponse create(@RequestBody SchoolRequest request) {
         return toResponse(service.create(toDto(request)));
+    }
+
+    @DeleteMapping
+    public void delete(@RequestParam(value = "schoolId") UUID schoolId) {
+        service.delete(schoolId);
+    }
+
+    @GetMapping
+    public SchoolResponse get(@RequestParam(value = "schoolId") UUID schoolId) {
+        return toResponse(service.get(schoolId));
     }
 
     private SchoolResponse toResponse(SchoolDto dto) {
@@ -30,8 +42,8 @@ public class SchoolController {
         response.setSchoolName(dto.getSchoolName());
         response.setSchoolAddress(dto.getSchoolAddress());
 
-        if (dto.getManager() != null) {
-            response.setManager(dto.getManager());
+        if (dto.getManagerId() != null) {
+            response.setManagerId(dto.getManagerId());
         }
 
         response.setAssistantManagers(dto.getAssistantManagers());
@@ -46,7 +58,8 @@ public class SchoolController {
         dto.setSchoolAddress(request.getSchoolAddress());
 
         if (request.getManagerId() != null) {
-            dto.setManager(new ManagerDto(request.getManagerId())); //BU KATMANDA SERVİCE İNJECT ETTİĞİM KISIMLARI KALDIR.
+            dto.setManagerId(request.getManagerId());
+            //dto.setManager(new ManagerDto(request.getManagerId())); //BU KATMANDA SERVİCE İNJECT ETTİĞİM KISIMLARI KALDIR.
             //BİR ÜSTTE YAZILAN KOD BLOĞUNDAKİ GİBİ YAP.
         }
 

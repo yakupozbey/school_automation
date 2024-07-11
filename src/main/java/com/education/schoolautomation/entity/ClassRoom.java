@@ -25,7 +25,7 @@ public class ClassRoom {
     @JsonBackReference(value = "school-class-rooms")
     private School school;
 
-    @OneToMany(mappedBy = "classRoom", cascade = CascadeType.ALL) //, fetch = FetchType.LAZY
+    @OneToMany(mappedBy = "classRoom", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference(value = "class-room-branches")
     private List<Branch> branches;
 }

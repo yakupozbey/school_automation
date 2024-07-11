@@ -9,7 +9,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ManagerResponse {
+public class ManagerResponse extends BaseResponse{
     private UUID managerId;
     private String ssn;
     private double salary;

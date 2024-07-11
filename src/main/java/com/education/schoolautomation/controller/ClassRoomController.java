@@ -1,33 +1,52 @@
 package com.education.schoolautomation.controller;
 
 import com.education.schoolautomation.dto.ClassRoomDto;
-import com.education.schoolautomation.dto.SchoolDto;
 import com.education.schoolautomation.request.ClassRoomRequest;
 import com.education.schoolautomation.response.ClassRoomResponse;
 import com.education.schoolautomation.service.ClassRoomService;
+import com.education.schoolautomation.service.impl.SchoolServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/class-rooms")
 public class ClassRoomController {
     @Autowired
     private ClassRoomService service;
+    @Autowired
+    private SchoolServiceImpl schoolService;
 
     @PostMapping
     public ClassRoomResponse create(@RequestBody ClassRoomRequest request) {
         return toResponse(service.create(toDto(request)));
     }
 
+    @DeleteMapping
+    public void delete(@RequestParam(value = "classRoomId") UUID classRoomId) {
+        service.delete(classRoomId);
+    }
+
+    @GetMapping
+    public List<ClassRoomResponse> getAll() {
+        return toResponseList(service.getAll());
+    }
+
+    public List<ClassRoomResponse> toResponseList(List<ClassRoomDto> dtoList) {
+        return dtoList.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
     private ClassRoomResponse toResponse(ClassRoomDto dto) {
         ClassRoomResponse response = new ClassRoomResponse();
         response.setClassRoomId(dto.getClassRoomId());
         response.setClassRoomName(dto.getClassRoomName());
-        if (dto.getSchool() != null) {
-            response.setSchool(dto.getSchool());
+        if (dto.getSchoolId() != null) {
+            response.setSchoolId(dto.getSchoolId());
         }
         if (dto.getBranches() != null) {
             response.setBranches(dto.getBranches());
@@ -40,7 +59,7 @@ public class ClassRoomController {
         ClassRoomDto dto = new ClassRoomDto();
         dto.setClassRoomName(request.getClassRoomName());
         if (request.getSchoolId() != null) {
-            dto.setSchool(new SchoolDto(request.getSchoolId()));
+            dto.setSchoolId(request.getSchoolId());
         }
         return dto;
     }

@@ -27,8 +27,25 @@ public class ClassroomServiceImpl implements ClassRoomService {
         return toDto(repository.save(toEntity(dto)));
     }
 
+    @Override
+    @Transactional
+    public void delete(UUID classRoomId) {
+        repository.deleteById(classRoomId);
+    }
+
+    @Override
+    public List<ClassRoomDto> getAll() {
+        return toDtoList(repository.findAll());
+    }
+
+
+    @Transactional
     public ClassRoomDto getById(UUID classRoomId) {
-        return toDto(repository.findById(classRoomId).get());
+        return toDto(findById(classRoomId));
+    }
+
+    public ClassRoom findById(UUID schoolId) {
+        return repository.findByClassRoomId(schoolId);
     }
 
 
@@ -52,7 +69,7 @@ public class ClassroomServiceImpl implements ClassRoomService {
         dto.setClassRoomId(entity.getClassRoomId());
         dto.setClassRoomName(entity.getClassRoomName());
         if (entity.getSchool() != null) {
-            dto.setSchool(schoolService.toDto(entity.getSchool()));
+            dto.setSchoolId(entity.getSchool().getSchoolId());
         }
         if (entity.getBranches() != null) {
             dto.setBranches(branchService.toDtoList(entity.getBranches()));
@@ -63,8 +80,8 @@ public class ClassroomServiceImpl implements ClassRoomService {
     public ClassRoom toEntity(ClassRoomDto dto) {
         ClassRoom entity = new ClassRoom();
         entity.setClassRoomName(dto.getClassRoomName());
-        if (dto.getSchool() != null) {
-            entity.setSchool(schoolService.findById(dto.getSchool().getSchoolId()));
+        if (dto.getSchoolId() != null) {
+            entity.setSchool(schoolService.findById(dto.getSchoolId()));
         }
 
         return entity;

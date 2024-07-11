@@ -1,5 +1,6 @@
 package com.education.schoolautomation.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -20,5 +21,6 @@ public class AssistantManager extends Identity{
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "school_id")
+    @JsonBackReference(value = "school-assistant-managers")
     private School school;
 }

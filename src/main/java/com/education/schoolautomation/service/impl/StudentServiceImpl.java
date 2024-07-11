@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +22,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDto create(StudentDto dto) {
         return toDto(repository.save(toEntity(dto)));
+    }
+
+    @Override
+    public void delete(UUID studentId) {
+        repository.deleteById(studentId);
+    }
+
+    @Override
+    public List<StudentDto> getAll() {
+        return toDtoList(repository.findAll());
     }
 
 
@@ -45,7 +56,7 @@ public class StudentServiceImpl implements StudentService {
         dto.setAge(entity.getAge());
         dto.setPhoneNumber(entity.getPhoneNumber());
         dto.setAddress(entity.getAddress());
-        dto.setLesson(dto.getLesson());
+        dto.setLessonId(dto.getLessonId());
         return dto;
     }
 
@@ -57,7 +68,7 @@ public class StudentServiceImpl implements StudentService {
         entity.setAge(dto.getAge());
         entity.setPhoneNumber(dto.getPhoneNumber());
         entity.setAddress(dto.getAddress());
-        entity.setLesson(lessonService.toEntity(dto.getLesson()));
+        entity.setLesson(lessonService.findById(dto.getLessonId()));
         return entity;
     }
 }

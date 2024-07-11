@@ -20,6 +20,8 @@ public class LessonServiceImpl implements LessonService {
     private TeacherServiceImpl teacherService;
     @Autowired
     private BranchServiceImpl branchService;
+    @Autowired
+    private StudentServiceImpl studentService;
 
 
     @Override
@@ -27,8 +29,23 @@ public class LessonServiceImpl implements LessonService {
         return toDto(repository.save(toEntity(dto)));
     }
 
+    @Override
+    public void delete(UUID lessonId) {
+        repository.deleteById(lessonId);
+    }
+
+    @Override
+    public List<LessonDto> getAll() {
+        return toDtoList(repository.findAll());
+    }
+
+
     public LessonDto getById(UUID lessonId) {
-        return toDto(repository.findById(lessonId).get());
+        return toDto(findById(lessonId));
+    }
+
+    public Lesson findById(UUID lessonId) {
+        return repository.findByLessonId(lessonId);
     }
 
 
@@ -49,18 +66,16 @@ public class LessonServiceImpl implements LessonService {
         LessonDto dto = new LessonDto();
         dto.setLessonId(entity.getLessonId());
         dto.setLessonName(entity.getLessonName());
-        dto.setBranch(branchService.toDto(entity.getBranch()));
-        dto.setTeacher(teacherService.toDto(entity.getLessonTeacher()));
-        dto.setStudents(entity.getStudents());
+        dto.setBranchId(entity.getBranch().getBranchId());
+        dto.setLessonTeacherId(entity.getLessonTeacher().getIdentityId());
+        dto.setStudents(studentService.toDtoList(entity.getStudents()));
         return dto;
     }
 
     public Lesson toEntity(LessonDto dto) {
         Lesson entity = new Lesson();
         entity.setLessonName(dto.getLessonName());
-        entity.setBranch(branchService.toEntity(dto.getBranch()));
-        entity.setLessonTeacher(teacherService.toEntity(dto.getTeacher()));
-        entity.setStudents(dto.getStudents());
+        entity.setLessonTeacher(teacherService.findById(dto.getLessonTeacherId()));
         return entity;
     }
 }

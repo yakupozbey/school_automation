@@ -1,6 +1,6 @@
 package com.education.schoolautomation.response;
 
-import com.education.schoolautomation.dto.LessonDto;
+
 import lombok.*;
 
 import java.util.UUID;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StudentResponse {
+public class StudentResponse extends BaseResponse{
     private UUID studentId;
     private String studentNumber;
     private String fullName;
@@ -19,5 +19,5 @@ public class StudentResponse {
     private String phoneNumber;
     private String address;
 
-    private LessonDto lesson;
+    private UUID lessonId;
 }

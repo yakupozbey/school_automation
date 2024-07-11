@@ -5,10 +5,11 @@ import com.education.schoolautomation.request.TeacherRequest;
 import com.education.schoolautomation.response.TeacherResponse;
 import com.education.schoolautomation.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/teachers")
@@ -17,12 +18,28 @@ public class TeacherController {
     private TeacherService service;
 
     @PostMapping
-    public TeacherResponse create(@RequestBody TeacherRequest request){
+    public TeacherResponse create(@RequestBody TeacherRequest request) {
         return toResponse(service.create(toDto(request)));
     }
 
+    @DeleteMapping
+    public void delete(@RequestParam(value = "teacherId") UUID teacherId) {
+        service.delete(teacherId);
+    }
+
+    @GetMapping
+    public List<TeacherResponse> getAll() {
+        return toResponselist(service.getAll());
+    }
+
+    public List<TeacherResponse> toResponselist(List<TeacherDto> dtoList) {
+        return dtoList.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
     private TeacherResponse toResponse(TeacherDto dto) {
-        TeacherResponse response= new TeacherResponse();
+        TeacherResponse response = new TeacherResponse();
         response.setTeacherId(dto.getTeacherId());
         response.setFullName(dto.getFullName());
         response.setTckn(dto.getTckn());
@@ -35,7 +52,7 @@ public class TeacherController {
     }
 
     private TeacherDto toDto(TeacherRequest request) {
-        TeacherDto dto= new TeacherDto();
+        TeacherDto dto = new TeacherDto();
         dto.setFullName(request.getFullName());
         dto.setTckn(request.getTckn());
         dto.setAge(request.getAge());

@@ -2,11 +2,14 @@ package com.education.schoolautomation.service.impl;
 
 import com.education.schoolautomation.dto.ManagerDto;
 import com.education.schoolautomation.entity.Manager;
+import com.education.schoolautomation.exception.RecordNotFoundExceptions;
 import com.education.schoolautomation.repository.ManagerRepository;
 import com.education.schoolautomation.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -15,21 +18,33 @@ public class ManagerServiceImpl implements ManagerService {
     private ManagerRepository repository;
 
     @Override
+    @Transactional
     public ManagerDto create(ManagerDto dto) {
         return toDto(repository.save(toEntity(dto)));
     }
 
+    @Override
+    public void delete(UUID managerId) {
+        repository.deleteById(managerId);
+    }
 
-    public ManagerDto getById(UUID managerId){
+    @Override
+    public ManagerDto get(UUID managerId) {
+        return toDto(repository.findById(managerId)
+                .orElseThrow(() -> new RecordNotFoundExceptions(4001, "Manager not found")));
+    }
+
+
+    public ManagerDto getById(UUID managerId) {
         return toDto(repository.findById(managerId).get());
     }
 
-    public Manager findById(UUID managerId){
+    public Manager findById(UUID managerId) {
         return repository.findByIdentityId(managerId);
     }
 
     public ManagerDto toDto(Manager entity) {
-        ManagerDto dto= new ManagerDto();
+        ManagerDto dto = new ManagerDto();
         dto.setManagerId(entity.getIdentityId());
         dto.setFullName(entity.getFullName());
         dto.setTckn(entity.getTckn());
@@ -42,7 +57,7 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     public Manager toEntity(ManagerDto dto) {
-        Manager entity= new Manager();
+        Manager entity = new Manager();
         entity.setFullName(dto.getFullName());
         entity.setTckn(dto.getTckn());
         entity.setAge(dto.getAge());

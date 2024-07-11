@@ -5,10 +5,10 @@ import com.education.schoolautomation.request.ManagerRequest;
 import com.education.schoolautomation.response.ManagerResponse;
 import com.education.schoolautomation.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/managers")
@@ -17,12 +17,22 @@ public class ManagerController {
     private ManagerService service;
 
     @PostMapping
-    public ManagerResponse create(@RequestBody ManagerRequest request){
+    public ManagerResponse create(@RequestBody ManagerRequest request) {
         return toResponse(service.create(toDto(request)));
     }
 
+    @DeleteMapping
+    public void delete(@RequestParam(value = "managerId") UUID managerId) {
+        service.delete(managerId);
+    }
+
+    @GetMapping
+    public ManagerResponse get(@RequestParam(value = "managerId") UUID managerId) {
+        return toResponse(service.get(managerId));
+    }
+
     private ManagerResponse toResponse(ManagerDto dto) {
-        ManagerResponse response= new ManagerResponse();
+        ManagerResponse response = new ManagerResponse();
         response.setManagerId(dto.getManagerId());
         response.setFullName(dto.getFullName());
         response.setTckn(dto.getTckn());
@@ -35,7 +45,7 @@ public class ManagerController {
     }
 
     private ManagerDto toDto(ManagerRequest request) {
-        ManagerDto dto= new ManagerDto();
+        ManagerDto dto = new ManagerDto();
         dto.setFullName(request.getFullName());
         dto.setTckn(request.getTckn());
         dto.setAge(request.getAge());
