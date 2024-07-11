@@ -1,6 +1,5 @@
 package com.education.schoolautomation.dto;
 
-import com.education.schoolautomation.entity.Student;
 import lombok.*;
 
 import java.util.List;
@@ -15,7 +14,7 @@ public class LessonDto {
     private UUID lessonId;
     private String lessonName;
 
-    private BranchDto branch;
-    private TeacherDto teacher;
-    private List<Student> students;
+    private UUID branchId;
+    private UUID lessonTeacherId;
+    private List<StudentDto> students;
 }

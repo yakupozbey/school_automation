@@ -25,7 +25,17 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
         return toDto(repository.save(toEntity(dto)));
     }
 
-    public AssistantManagerDto getById(UUID assistantManagerId){
+    @Override
+    public void delete(UUID assistantManagerId) {
+        repository.deleteById(assistantManagerId);
+    }
+
+    @Override
+    public List<AssistantManagerDto> getAll() {
+        return toDtoList(repository.findAll());
+    }
+
+    public AssistantManagerDto getById(UUID assistantManagerId) {
         return toDto(repository.findById(assistantManagerId).get());
     }
 
@@ -45,7 +55,7 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
 
 
     public AssistantManagerDto toDto(AssistantManager entity) {
-        AssistantManagerDto dto= new AssistantManagerDto();
+        AssistantManagerDto dto = new AssistantManagerDto();
         dto.setAssistantManagerId(entity.getIdentityId());
         dto.setFullName(entity.getFullName());
         dto.setTckn(entity.getTckn());
@@ -59,7 +69,7 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
     }
 
     public AssistantManager toEntity(AssistantManagerDto dto) {
-        AssistantManager entity= new AssistantManager();
+        AssistantManager entity = new AssistantManager();
         entity.setFullName(dto.getFullName());
         entity.setTckn(dto.getTckn());
         entity.setAge(dto.getAge());

@@ -16,7 +16,7 @@ public class SchoolDto {
     private String schoolName;
     private String schoolAddress;
 
-    private ManagerDto manager;
+    private UUID managerId;
     private List<AssistantManagerDto> assistantManagers;
     private List<ClassRoomDto> classRooms;
 

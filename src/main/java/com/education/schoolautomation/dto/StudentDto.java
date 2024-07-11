@@ -1,5 +1,6 @@
 package com.education.schoolautomation.dto;
 
+import com.education.schoolautomation.entity.Lesson;
 import lombok.*;
 
 import java.util.UUID;
@@ -19,5 +20,5 @@ public class StudentDto {
     private String phoneNumber;
     private String address;
 
-    private LessonDto lesson;
+    private UUID lessonId;
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AssistantManagerResponse {
+public class AssistantManagerResponse extends BaseResponse{
     private UUID assistantManagerId;
     private String ssn;
     private double salary;

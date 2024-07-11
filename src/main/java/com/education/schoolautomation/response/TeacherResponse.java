@@ -8,7 +8,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TeacherResponse {
+public class TeacherResponse extends BaseResponse{
     private UUID teacherId;
     private String ssn;
     private double salary;

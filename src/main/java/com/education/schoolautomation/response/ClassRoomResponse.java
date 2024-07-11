@@ -12,10 +12,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ClassRoomResponse {
+public class ClassRoomResponse extends BaseResponse{
     private UUID classRoomId;
     private String classRoomName;
 
-    private SchoolDto school;
+    private UUID schoolId;
     private List<BranchDto> branches;
 }

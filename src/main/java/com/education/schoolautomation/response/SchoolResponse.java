@@ -13,13 +13,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SchoolResponse {
+public class SchoolResponse extends BaseResponse{
     private UUID schoolId;
     private String schoolType;
     private String schoolName;
     private String schoolAddress;
 
-    private ManagerDto manager;
+    private UUID managerId;
     private List<AssistantManagerDto> assistantManagers;
     private List<ClassRoomDto> classRooms;
 }

@@ -1,7 +1,6 @@
 package com.education.schoolautomation.response;
 
-import com.education.schoolautomation.dto.BranchDto;
-import com.education.schoolautomation.dto.TeacherDto;
+
 import com.education.schoolautomation.entity.Student;
 import lombok.*;
 
@@ -13,11 +12,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LessonResponse {
+public class LessonResponse extends BaseResponse{
     private UUID lessonId;
     private String lessonName;
 
-    private BranchDto branch;
-    private TeacherDto teacher;
+    private UUID branchId;
+    private UUID lessonTeacherId;
     private List<Student> students;
 }

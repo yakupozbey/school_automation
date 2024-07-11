@@ -7,10 +7,11 @@ import com.education.schoolautomation.response.StudentResponse;
 import com.education.schoolautomation.service.StudentService;
 import com.education.schoolautomation.service.impl.LessonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/students")
@@ -25,6 +26,23 @@ public class StudentController {
         return toResponse(service.create(toDto(request)));
     }
 
+    @DeleteMapping
+    public void delete(@RequestParam(value = "studentId") UUID studentId) {
+        service.delete(studentId);
+    }
+
+    @GetMapping
+    public List<StudentResponse> getAll() {
+        return toResponseList(service.getAll());
+    }
+
+    private List<StudentResponse> toResponseList(List<StudentDto> dtoList) {
+        return dtoList.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+
     private StudentResponse toResponse(StudentDto dto) {
         StudentResponse response = new StudentResponse();
         response.setStudentId(dto.getStudentId());
@@ -34,7 +52,7 @@ public class StudentController {
         response.setAge(dto.getAge());
         response.setPhoneNumber(dto.getPhoneNumber());
         response.setAddress(dto.getAddress());
-        response.setLesson(dto.getLesson());
+        response.setLessonId(dto.getLessonId());
         return response;
     }
 
@@ -46,7 +64,7 @@ public class StudentController {
         dto.setAge(request.getAge());
         dto.setPhoneNumber(request.getPhoneNumber());
         dto.setAddress(request.getAddress());
-        dto.setLesson(lessonService.getById(request.getLessonId()));
+        dto.setLessonId(request.getLessonId());
         return dto;
     }
 }

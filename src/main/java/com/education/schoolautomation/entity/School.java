@@ -26,6 +26,7 @@ public class School {
     private Manager manager;
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference(value = "school-assistant-managers")
     private List<AssistantManager> assistantManagers;
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)

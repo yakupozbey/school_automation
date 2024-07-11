@@ -10,9 +10,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class LessonRequest {
-    private UUID lessonId;
-    private String lessonName;
 
+    private String lessonName;
     private UUID branchId;
     private UUID teacherId;
 }

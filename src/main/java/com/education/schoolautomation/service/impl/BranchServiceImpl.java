@@ -6,6 +6,7 @@ import com.education.schoolautomation.repository.BranchRepository;
 import com.education.schoolautomation.service.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,9 +24,21 @@ public class BranchServiceImpl implements BranchService {
     private LessonServiceImpl lessonService;
 
     @Override
+    @Transactional
     public BranchDto create(BranchDto dto) {
         return toDto(repository.save(toEntity(dto)));
     }
+
+    @Override
+    public void delete(UUID branchId) {
+        repository.deleteById(branchId);
+    }
+
+    @Override
+    public List<BranchDto> getAll() {
+        return toDtoList(repository.findAll());
+    }
+
 
     public BranchDto getById(UUID branchId) {
         return toDto(repository.findById(branchId).get());
@@ -47,8 +60,8 @@ public class BranchServiceImpl implements BranchService {
         BranchDto dto = new BranchDto();
         dto.setBranchId(entity.getBranchId());
         dto.setBranchName(entity.getBranchName());
-        dto.setClassRoom(classroomService.toDto(entity.getClassRoom()));
-        dto.setClassTeacher(teacherService.toDto(entity.getClassTeacher()));
+        dto.setClassRoomId(entity.getClassRoom().getClassRoomId());
+        dto.setClassTeacherId(entity.getClassTeacher().getIdentityId());
         dto.setLessons(lessonService.toDtoList(entity.getLessons()));
         return dto;
     }
@@ -56,8 +69,8 @@ public class BranchServiceImpl implements BranchService {
     public Branch toEntity(BranchDto dto) {
         Branch entity = new Branch();
         entity.setBranchName(dto.getBranchName());
-        entity.setClassRoom(classroomService.toEntity(dto.getClassRoom()));
-        entity.setClassTeacher(teacherService.toEntity(dto.getClassTeacher()));
+        entity.setClassRoom(classroomService.findById(dto.getClassRoomId()));
+        entity.setClassTeacher(teacherService.findById(dto.getClassTeacherId()));
         return entity;
     }
 }

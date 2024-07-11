@@ -3,6 +3,7 @@ package com.education.schoolautomation.service.impl;
 
 import com.education.schoolautomation.dto.SchoolDto;
 import com.education.schoolautomation.entity.School;
+import com.education.schoolautomation.exception.RecordNotFoundExceptions;
 import com.education.schoolautomation.repository.SchoolRepository;
 import com.education.schoolautomation.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,22 @@ public class SchoolServiceImpl implements SchoolService {
         return toDto(repository.save(toEntity(dto)));
     }
 
+    @Override
+    @Transactional
+    public void delete(UUID schoolId) {
+        repository.deleteById(schoolId);
+    }
+
+    @Override
+    public SchoolDto get(UUID schoolId) {
+        return toDto(repository.findById(schoolId)
+                .orElseThrow(() -> new RecordNotFoundExceptions(4001, "User not found")));
+    }
+
+
+    @Transactional
     public SchoolDto getById(UUID schoolId) {
-        return toDto(repository.findById(schoolId).get());
+        return toDto(findById(schoolId));
     }
 
     @Transactional
@@ -46,7 +61,7 @@ public class SchoolServiceImpl implements SchoolService {
         dto.setSchoolAddress(entity.getSchoolAddress());
 
         if (entity.getManager() != null) {
-            dto.setManager(managerService.getById(entity.getManager().getIdentityId()));
+            dto.setManagerId(entity.getManager().getIdentityId());
         }
         if (entity.getAssistantManagers() != null) {
             dto.setAssistantManagers(assistantManagerService.toDtoList(entity.getAssistantManagers()));
@@ -65,8 +80,8 @@ public class SchoolServiceImpl implements SchoolService {
         entity.setSchoolName(dto.getSchoolName());
         entity.setSchoolAddress(dto.getSchoolAddress());
 
-        if (dto.getManager() != null) {
-            entity.setManager(managerService.findById(dto.getManager().getManagerId()));
+        if (dto.getSchoolId() != null) {
+            entity.setManager(managerService.findById(dto.getManagerId()));
         }
 
         /*
