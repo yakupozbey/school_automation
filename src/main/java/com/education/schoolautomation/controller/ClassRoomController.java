@@ -1,12 +1,12 @@
 package com.education.schoolautomation.controller;
 
 import com.education.schoolautomation.dto.ClassRoomDto;
+import com.education.schoolautomation.dto.SchoolDto;
 import com.education.schoolautomation.request.ClassRoomRequest;
 import com.education.schoolautomation.response.ClassRoomResponse;
 import com.education.schoolautomation.service.ClassRoomService;
 import com.education.schoolautomation.service.impl.SchoolServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,8 +53,8 @@ public class ClassRoomController {
         ClassRoomResponse response = new ClassRoomResponse();
         response.setClassRoomId(dto.getClassRoomId());
         response.setClassRoomName(dto.getClassRoomName());
-        if (dto.getSchoolId() != null) {
-            response.setSchoolId(dto.getSchoolId());
+        if (dto.getSchool() != null) {
+            response.setSchoolId(dto.getSchool().getSchoolId());
         }
         if (dto.getBranches() != null) {
             response.setBranches(dto.getBranches());
@@ -67,7 +67,7 @@ public class ClassRoomController {
         ClassRoomDto dto = new ClassRoomDto();
         dto.setClassRoomName(request.getClassRoomName());
         if (request.getSchoolId() != null) {
-            dto.setSchoolId(request.getSchoolId());
+            dto.setSchool(SchoolDto.builder().schoolId(request.getSchoolId()).build());
         }
         return dto;
     }

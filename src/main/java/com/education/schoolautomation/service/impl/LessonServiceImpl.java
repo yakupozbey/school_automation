@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -53,6 +54,9 @@ public class LessonServiceImpl implements LessonService {
 
 
     public List<LessonDto> toDtoList(List<Lesson> entityList) {
+        if (entityList==null){
+            return Collections.emptyList();
+        }
         return entityList.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());

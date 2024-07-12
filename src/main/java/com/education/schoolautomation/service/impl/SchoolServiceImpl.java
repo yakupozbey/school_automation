@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.UUID;
 
 @Service
@@ -41,8 +42,19 @@ public class SchoolServiceImpl implements SchoolService {
         exitSchool.setSchoolType(dto.getSchoolType());
         exitSchool.setSchoolName(dto.getSchoolName());
         exitSchool.setSchoolAddress(dto.getSchoolAddress());
-        exitSchool.setAssistantManagers(assistantManagerService.toEntityList(dto.getAssistantManagers()));
-        exitSchool.setClassRooms(classroomService.toEntityList(dto.getClassRooms()));
+
+        if (dto.getAssistantManagers() != null) {
+            exitSchool.setAssistantManagers(assistantManagerService.toEntityList(dto.getAssistantManagers()));
+        } else {
+            exitSchool.setAssistantManagers(Collections.emptyList());
+        }
+
+        if (dto.getClassRooms() != null) {
+            exitSchool.setClassRooms(classroomService.toEntityList(dto.getClassRooms()));
+        } else {
+            exitSchool.setClassRooms(Collections.emptyList());
+        }
+
         exitSchool = repository.save(exitSchool);
         return toDtoSecond(exitSchool);
     }
@@ -75,11 +87,11 @@ public class SchoolServiceImpl implements SchoolService {
             dto.setManager(managerService.toDto(entity.getManager()));
         }
 
-        //dto.setClassRooms(classroomService.toDtoList(entity.getClassRooms()));
+        //dto.getAssistantManagers(assistantManagerService.toDtoList(entity.getAssistantManagers()));
 
-        if (entity.getClassRooms() != null) {
+        /*if (entity.getClassRooms() != null) {
             dto.setClassRooms(classroomService.toDtoList(entity.getClassRooms()));
-        }
+        }*/
 
         return dto;
     }
@@ -99,22 +111,9 @@ public class SchoolServiceImpl implements SchoolService {
         entity.setSchoolType(dto.getSchoolType());
         entity.setSchoolName(dto.getSchoolName());
         entity.setSchoolAddress(dto.getSchoolAddress());
-        entity.setManager(managerService.findById(dto.getManager().getManagerId()));
-/*
-        if (dto.getSchoolId() != null) {
+        if (dto.getAssistantManagers()!=null){
             entity.setManager(managerService.findById(dto.getManager().getManagerId()));
         }
-
-
-        if (dto.getAssistantManagers() != null) {
-            entity.setAssistantManagers(assistantManagerService.toEntityList(dto.getAssistantManagers()));
-        }
-        if (dto.getClassRooms() != null) {
-            entity.setClassRooms(classroomService.toEntityList(dto.getClassRooms()));
-        }
-         */
-
-
         return entity;
     }
 }
