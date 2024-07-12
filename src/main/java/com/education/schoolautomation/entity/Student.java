@@ -18,7 +18,7 @@ import lombok.Setter;
 public class Student extends Identity{
     private String studentNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "lesson_id")
     @JsonBackReference(value = "lesson-students")
     private Lesson lesson;

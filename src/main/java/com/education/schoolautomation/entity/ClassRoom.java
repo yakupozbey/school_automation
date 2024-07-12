@@ -20,7 +20,7 @@ public class ClassRoom {
     private UUID classRoomId;
     private String classRoomName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "school_id")
     @JsonBackReference(value = "school-class-rooms")
     private School school;
