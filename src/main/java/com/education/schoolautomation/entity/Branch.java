@@ -20,7 +20,7 @@ public class Branch {
     private UUID branchId;
     private String branchName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "class_room_id")
     @JsonBackReference(value = "class-room-branches")
     private ClassRoom classRoom;
