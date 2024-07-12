@@ -20,7 +20,4 @@ public class SchoolDto {
     private List<AssistantManagerDto> assistantManagers;
     private List<ClassRoomDto> classRooms;
 
-    public SchoolDto(UUID schoolId) {
-        this.schoolId = schoolId;
-    }
 }

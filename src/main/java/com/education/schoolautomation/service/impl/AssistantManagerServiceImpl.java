@@ -6,11 +6,11 @@ import com.education.schoolautomation.exception.RecordNotFoundExceptions;
 import com.education.schoolautomation.repository.AssistantManagerRepository;
 import com.education.schoolautomation.service.AssistantManagerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,8 +45,11 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
         exitAssistantManager.setAddress(dto.getAddress());
         exitAssistantManager.setSsn(dto.getSsn());
         exitAssistantManager.setSalary(dto.getSalary());
-        exitAssistantManager.setSchool(schoolService.toEntity(dto.getSchool()));
-        exitAssistantManager= repository.save(exitAssistantManager);
+        if (dto.getSchool() != null) {
+            exitAssistantManager.setSchool(schoolService.toEntity(dto.getSchool()));
+        }
+
+        exitAssistantManager = repository.save(exitAssistantManager);
         return toDto(exitAssistantManager);
     }
 
@@ -61,6 +64,8 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
     }
 
 
+
+
     public List<AssistantManagerDto> toDtoList(List<AssistantManager> entityList) {
         return entityList.stream()
                 .map(this::toDto)
@@ -69,6 +74,10 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
 
 
     public List<AssistantManager> toEntityList(List<AssistantManagerDto> dtoList) {
+        //dtoList null ise bana boş bir liste oluşturur
+        if (dtoList == null) {
+            return Collections.emptyList();
+        }
         return dtoList.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());
@@ -84,7 +93,10 @@ public class AssistantManagerServiceImpl implements AssistantManagerService {
         dto.setPhoneNumber(entity.getPhoneNumber());
         dto.setAddress(entity.getAddress());
         dto.setSsn(entity.getSsn());
-        dto.setSchool(schoolService.toDto(entity.getSchool()));
+        if (entity.getSchool() != null) {
+            dto.setSchool(schoolService.toDto(entity.getSchool()));
+        }
+
         dto.setSalary(entity.getSalary());
         return dto;
     }

@@ -14,7 +14,7 @@ public class ClassRoomDto {
     private UUID classRoomId;
     private String classRoomName;
 
-    private UUID schoolId;
+    private SchoolDto school;
     private List<BranchDto> branches;
 
 }

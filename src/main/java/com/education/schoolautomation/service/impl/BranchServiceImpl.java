@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -54,6 +55,9 @@ public class BranchServiceImpl implements BranchService {
     }
 
     public List<Branch> toEntityList(List<BranchDto> dtoList) {
+        if (dtoList == null) {
+            return Collections.emptyList();
+        }
         return dtoList.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());
