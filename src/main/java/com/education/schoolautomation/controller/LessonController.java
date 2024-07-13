@@ -1,6 +1,8 @@
 package com.education.schoolautomation.controller;
 
+import com.education.schoolautomation.dto.BranchDto;
 import com.education.schoolautomation.dto.LessonDto;
+import com.education.schoolautomation.dto.TeacherDto;
 import com.education.schoolautomation.request.LessonRequest;
 import com.education.schoolautomation.response.LessonResponse;
 import com.education.schoolautomation.service.LessonService;
@@ -8,7 +10,6 @@ import com.education.schoolautomation.service.impl.BranchServiceImpl;
 import com.education.schoolautomation.service.impl.StudentServiceImpl;
 import com.education.schoolautomation.service.impl.TeacherServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,8 +57,8 @@ public class LessonController {
         LessonResponse response = new LessonResponse();
         response.setLessonId(dto.getLessonId());
         response.setLessonName(dto.getLessonName());
-        response.setBranchId(dto.getBranchId());
-        response.setLessonTeacherId(dto.getLessonTeacherId());
+        response.setBranchId(dto.getBranch().getBranchId());
+        response.setLessonTeacherId(dto.getLessonTeacher().getTeacherId());
         response.setStudents(studentService.toEntityList(dto.getStudents()));
         return response;
     }
@@ -65,8 +66,8 @@ public class LessonController {
     private LessonDto toDto(LessonRequest request) {
         LessonDto dto = new LessonDto();
         dto.setLessonName(request.getLessonName());
-        dto.setBranchId(request.getBranchId());
-        dto.setLessonTeacherId(request.getTeacherId());
+        dto.setBranch(BranchDto.builder().branchId(request.getBranchId()).build());
+        dto.setLessonTeacher(TeacherDto.builder().teacherId(request.getTeacherId()).build());
         return dto;
     }
 }

@@ -1,13 +1,13 @@
 package com.education.schoolautomation.controller;
 
 
+import com.education.schoolautomation.dto.LessonDto;
 import com.education.schoolautomation.dto.StudentDto;
 import com.education.schoolautomation.request.StudentRequest;
 import com.education.schoolautomation.response.StudentResponse;
 import com.education.schoolautomation.service.StudentService;
 import com.education.schoolautomation.service.impl.LessonServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +55,7 @@ public class StudentController {
         response.setAge(dto.getAge());
         response.setPhoneNumber(dto.getPhoneNumber());
         response.setAddress(dto.getAddress());
-        response.setLessonId(dto.getLessonId());
+        response.setLessonId(dto.getLesson().getLessonId());
         return response;
     }
 
@@ -67,7 +67,7 @@ public class StudentController {
         dto.setAge(request.getAge());
         dto.setPhoneNumber(request.getPhoneNumber());
         dto.setAddress(request.getAddress());
-        dto.setLessonId(request.getLessonId());
+        dto.setLesson(LessonDto.builder().lessonId(request.getLessonId()).build());
         return dto;
     }
 }

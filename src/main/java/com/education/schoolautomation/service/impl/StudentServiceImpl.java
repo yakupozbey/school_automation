@@ -6,7 +6,6 @@ import com.education.schoolautomation.entity.Student;
 import com.education.schoolautomation.repository.StudentRepository;
 import com.education.schoolautomation.service.StudentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public class StudentServiceImpl implements StudentService {
         dto.setAge(entity.getAge());
         dto.setPhoneNumber(entity.getPhoneNumber());
         dto.setAddress(entity.getAddress());
-        dto.setLessonId(dto.getLessonId());
+        dto.setLesson(dto.getLesson());
         return dto;
     }
 
@@ -70,7 +69,7 @@ public class StudentServiceImpl implements StudentService {
         entity.setAge(dto.getAge());
         entity.setPhoneNumber(dto.getPhoneNumber());
         entity.setAddress(dto.getAddress());
-        entity.setLesson(lessonService.findById(dto.getLessonId()));
+        entity.setLesson(lessonService.findById(dto.getLesson().getLessonId()));
         return entity;
     }
 }

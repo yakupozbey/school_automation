@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,16 +22,21 @@ public class ClassroomServiceImpl implements ClassRoomService {
 
     private final BranchServiceImpl branchService;
 
-    @Transactional
+
     @Override
+    @Transactional
     public ClassRoomDto create(ClassRoomDto dto) {
         return toDto(repository.save(toEntity(dto)));
     }
 
     @Override
     @Transactional
-    public void delete(UUID classRoomId) {
-        repository.deleteById(classRoomId);
+    public void delete(Optional<UUID> classRoomId) {
+        ClassRoom classRoom= repository.findByClassRoomId(classRoomId.get());
+        if (classRoom==null){
+            throw new NoSuchElementException("ClassRoom not found");
+        }
+        repository.deleteById(classRoomId.get());
     }
 
     @Override
@@ -56,11 +59,6 @@ public class ClassroomServiceImpl implements ClassRoomService {
         return toDto(exitClassRoom);
     }
 
-
-    @Transactional
-    public ClassRoomDto getById(UUID classRoomId) {
-        return toDto(findById(classRoomId));
-    }
 
     public ClassRoom findById(UUID classRoomId) {
         return repository.findByClassRoomId(classRoomId);
@@ -101,6 +99,7 @@ public class ClassroomServiceImpl implements ClassRoomService {
     public ClassRoom toEntity(ClassRoomDto dto) {
         ClassRoom entity = new ClassRoom();
         entity.setClassRoomName(dto.getClassRoomName());
+
         if (dto.getSchool() != null) {
             entity.setSchool(schoolService.findById(dto.getSchool().getSchoolId()));
         }

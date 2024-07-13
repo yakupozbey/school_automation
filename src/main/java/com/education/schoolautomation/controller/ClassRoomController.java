@@ -5,23 +5,26 @@ import com.education.schoolautomation.dto.SchoolDto;
 import com.education.schoolautomation.request.ClassRoomRequest;
 import com.education.schoolautomation.response.ClassRoomResponse;
 import com.education.schoolautomation.service.ClassRoomService;
-import com.education.schoolautomation.service.impl.SchoolServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/class-rooms")
-@RequiredArgsConstructor(onConstructor = @__(@Lazy))
+
 public class ClassRoomController {
+
 
     private final ClassRoomService service;
 
-    private final SchoolServiceImpl schoolService;
+    public ClassRoomController(ClassRoomService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public ClassRoomResponse create(@RequestBody ClassRoomRequest request) {
@@ -29,12 +32,12 @@ public class ClassRoomController {
     }
 
     @DeleteMapping
-    public void delete(@RequestParam(value = "classRoomId") UUID classRoomId) {
+    public void delete(@RequestParam(value = "classRoomId") Optional<UUID> classRoomId) {
         service.delete(classRoomId);
     }
 
     @PutMapping
-    public ClassRoomResponse update(@RequestParam(value = "classRoomId") UUID classRoomId, @RequestBody ClassRoomRequest request){
+    public ClassRoomResponse update(@RequestParam(value = "classRoomId") UUID classRoomId, @RequestBody ClassRoomRequest request) {
         return toResponse(service.update(classRoomId, toDto(request)));
     }
 
@@ -66,6 +69,7 @@ public class ClassRoomController {
     private ClassRoomDto toDto(ClassRoomRequest request) {
         ClassRoomDto dto = new ClassRoomDto();
         dto.setClassRoomName(request.getClassRoomName());
+
         if (request.getSchoolId() != null) {
             dto.setSchool(SchoolDto.builder().schoolId(request.getSchoolId()).build());
         }
