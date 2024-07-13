@@ -67,11 +67,6 @@ public class SchoolServiceImpl implements SchoolService {
 
 
     @Transactional
-    public SchoolDto getById(UUID schoolId) {
-        return toDto(findById(schoolId));
-    }
-
-    @Transactional
     public School findById(UUID schoolId) {
         return repository.findBySchoolId(schoolId);
     }
@@ -111,7 +106,7 @@ public class SchoolServiceImpl implements SchoolService {
         entity.setSchoolType(dto.getSchoolType());
         entity.setSchoolName(dto.getSchoolName());
         entity.setSchoolAddress(dto.getSchoolAddress());
-        if (dto.getAssistantManagers()!=null){
+        if (dto.getManager().getManagerId() != null) {
             entity.setManager(managerService.findById(dto.getManager().getManagerId()));
         }
         return entity;

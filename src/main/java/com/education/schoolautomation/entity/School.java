@@ -22,7 +22,7 @@ public class School {
     private String schoolAddress;
 
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "manager_id", referencedColumnName = "identityId")
     private Manager manager;
 

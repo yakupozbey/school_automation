@@ -31,7 +31,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public ManagerDto update(UUID managerId, ManagerDto dto) {
-        Manager exitManager= repository.findByIdentityId(managerId);
+        Manager exitManager = repository.findByIdentityId(managerId);
         exitManager.setFullName(dto.getFullName());
         exitManager.setTckn(dto.getTckn());
         exitManager.setAge(dto.getAge());
@@ -39,7 +39,7 @@ public class ManagerServiceImpl implements ManagerService {
         exitManager.setAddress(dto.getAddress());
         exitManager.setSsn(dto.getSsn());
         exitManager.setSalary(dto.getSalary());
-        exitManager= repository.save(exitManager);
+        exitManager = repository.save(exitManager);
         return toDto(exitManager);
     }
 
@@ -50,11 +50,6 @@ public class ManagerServiceImpl implements ManagerService {
                 .orElseThrow(() -> new RecordNotFoundExceptions(4001, "Manager not found")));
     }
 
-
-
-    public ManagerDto getById(UUID managerId) {
-        return toDto(repository.findById(managerId).get());
-    }
 
     public Manager findById(UUID managerId) {
         return repository.findByIdentityId(managerId);

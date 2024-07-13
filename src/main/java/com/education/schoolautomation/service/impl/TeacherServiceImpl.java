@@ -35,7 +35,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherDto update(UUID teacherId, TeacherDto dto) {
-        Teacher exitTeacher= repository.findById(teacherId).orElseThrow(() -> new RecordNotFoundExceptions(4001, "User not found"));
+        Teacher exitTeacher = repository.findById(teacherId).orElseThrow(() -> new RecordNotFoundExceptions(4001, "User not found"));
         exitTeacher.setFullName(dto.getFullName());
         exitTeacher.setTckn(dto.getTckn());
         exitTeacher.setAge(dto.getAge());
@@ -43,7 +43,7 @@ public class TeacherServiceImpl implements TeacherService {
         exitTeacher.setAddress(dto.getAddress());
         exitTeacher.setSsn(dto.getSsn());
         exitTeacher.setSalary(dto.getSalary());
-        exitTeacher= repository.save(exitTeacher);
+        exitTeacher = repository.save(exitTeacher);
         return toDto(exitTeacher);
     }
 
@@ -52,12 +52,6 @@ public class TeacherServiceImpl implements TeacherService {
         return toDtoList(repository.findAll());
     }
 
-
-
-    @Transactional
-    public TeacherDto getById(UUID teacherId) {
-        return toDto(findById(teacherId));
-    }
 
     @Transactional
     public Teacher findById(UUID identityId) {

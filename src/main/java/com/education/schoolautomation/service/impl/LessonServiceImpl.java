@@ -6,7 +6,6 @@ import com.education.schoolautomation.entity.Lesson;
 import com.education.schoolautomation.repository.LessonRepository;
 import com.education.schoolautomation.service.LessonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -44,17 +43,13 @@ public class LessonServiceImpl implements LessonService {
     }
 
 
-    public LessonDto getById(UUID lessonId) {
-        return toDto(findById(lessonId));
-    }
-
     public Lesson findById(UUID lessonId) {
         return repository.findByLessonId(lessonId);
     }
 
 
     public List<LessonDto> toDtoList(List<Lesson> entityList) {
-        if (entityList==null){
+        if (entityList == null) {
             return Collections.emptyList();
         }
         return entityList.stream()
@@ -73,8 +68,8 @@ public class LessonServiceImpl implements LessonService {
         LessonDto dto = new LessonDto();
         dto.setLessonId(entity.getLessonId());
         dto.setLessonName(entity.getLessonName());
-        dto.setBranchId(entity.getBranch().getBranchId());
-        dto.setLessonTeacherId(entity.getLessonTeacher().getIdentityId());
+        dto.setBranch(branchService.toDto(entity.getBranch()));
+        dto.setLessonTeacher(teacherService.toDto(entity.getLessonTeacher()));
         dto.setStudents(studentService.toDtoList(entity.getStudents()));
         return dto;
     }
@@ -82,7 +77,7 @@ public class LessonServiceImpl implements LessonService {
     public Lesson toEntity(LessonDto dto) {
         Lesson entity = new Lesson();
         entity.setLessonName(dto.getLessonName());
-        entity.setLessonTeacher(teacherService.findById(dto.getLessonTeacherId()));
+        entity.setLessonTeacher(teacherService.findById(dto.getLessonTeacher().getIdentityId()));
         return entity;
     }
 }

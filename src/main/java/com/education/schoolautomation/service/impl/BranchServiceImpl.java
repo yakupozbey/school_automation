@@ -5,7 +5,6 @@ import com.education.schoolautomation.entity.Branch;
 import com.education.schoolautomation.repository.BranchRepository;
 import com.education.schoolautomation.service.BranchService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,10 +43,6 @@ public class BranchServiceImpl implements BranchService {
     }
 
 
-    public BranchDto getById(UUID branchId) {
-        return toDto(repository.findById(branchId).get());
-    }
-
     public List<BranchDto> toDtoList(List<Branch> entityList) {
         return entityList.stream()
                 .map(this::toDto)
@@ -67,8 +62,8 @@ public class BranchServiceImpl implements BranchService {
         BranchDto dto = new BranchDto();
         dto.setBranchId(entity.getBranchId());
         dto.setBranchName(entity.getBranchName());
-        dto.setClassRoomId(entity.getClassRoom().getClassRoomId());
-        dto.setClassTeacherId(entity.getClassTeacher().getIdentityId());
+        dto.setClassRoom(classroomService.toDto(entity.getClassRoom()));
+        dto.setClassTeacher(teacherService.toDto(entity.getClassTeacher()));
         dto.setLessons(lessonService.toDtoList(entity.getLessons()));
         return dto;
     }
@@ -76,8 +71,8 @@ public class BranchServiceImpl implements BranchService {
     public Branch toEntity(BranchDto dto) {
         Branch entity = new Branch();
         entity.setBranchName(dto.getBranchName());
-        entity.setClassRoom(classroomService.findById(dto.getClassRoomId()));
-        entity.setClassTeacher(teacherService.findById(dto.getClassTeacherId()));
+        entity.setClassRoom(classroomService.findById(dto.getClassRoom().getClassRoomId()));
+        entity.setClassTeacher(teacherService.findById(dto.getClassTeacher().getIdentityId()));
         return entity;
     }
 }

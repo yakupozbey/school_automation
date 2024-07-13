@@ -1,13 +1,14 @@
 package com.education.schoolautomation.controller;
 
 import com.education.schoolautomation.dto.BranchDto;
+import com.education.schoolautomation.dto.ClassRoomDto;
+import com.education.schoolautomation.dto.TeacherDto;
 import com.education.schoolautomation.request.BranchRequest;
 import com.education.schoolautomation.response.BranchResponse;
 import com.education.schoolautomation.service.BranchService;
 import com.education.schoolautomation.service.impl.ClassroomServiceImpl;
 import com.education.schoolautomation.service.impl.TeacherServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,8 +53,8 @@ public class BranchController {
         BranchResponse response = new BranchResponse();
         response.setBranchId(dto.getBranchId());
         response.setBranchName(dto.getBranchName());
-        response.setBranchId(dto.getClassRoomId());
-        response.setClassTeacherId(dto.getClassTeacherId());
+        response.setBranchId(dto.getClassRoom().getClassRoomId());
+        response.setClassTeacherId(dto.getClassTeacher().getTeacherId());
         response.setLessons(dto.getLessons());
         return response;
     }
@@ -61,8 +62,8 @@ public class BranchController {
     private BranchDto toDto(BranchRequest request) {
         BranchDto dto = new BranchDto();
         dto.setBranchName(request.getBranchName());
-        dto.setClassRoomId(request.getClassRoomId());
-        dto.setClassTeacherId(request.getTeacherId());
+        dto.setClassRoom(ClassRoomDto.builder().classRoomId(request.getClassRoomId()).build());
+        dto.setClassTeacher(TeacherDto.builder().teacherId(request.getTeacherId()).build());
         return dto;
     }
 }
