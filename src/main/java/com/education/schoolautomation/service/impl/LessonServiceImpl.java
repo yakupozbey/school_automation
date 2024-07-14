@@ -58,6 +58,9 @@ public class LessonServiceImpl implements LessonService {
     }
 
     public List<Lesson> toEntityList(List<LessonDto> dtoList) {
+        if (dtoList==null){
+            return Collections.emptyList();
+        }
         return dtoList.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());

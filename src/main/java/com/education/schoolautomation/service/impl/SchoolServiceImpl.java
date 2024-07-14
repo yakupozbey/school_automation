@@ -38,7 +38,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public SchoolDto update(UUID schoolId, SchoolDto dto) {
-        School exitSchool = repository.findById(schoolId).orElseThrow(() -> new NullPointerException());
+        School exitSchool = repository.findBySchoolId(schoolId);
         exitSchool.setSchoolType(dto.getSchoolType());
         exitSchool.setSchoolName(dto.getSchoolName());
         exitSchool.setSchoolAddress(dto.getSchoolAddress());

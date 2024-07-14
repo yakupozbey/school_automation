@@ -2,6 +2,8 @@ package com.education.schoolautomation.service.impl;
 
 import com.education.schoolautomation.dto.BranchDto;
 import com.education.schoolautomation.entity.Branch;
+import com.education.schoolautomation.entity.ClassRoom;
+import com.education.schoolautomation.exception.RecordNotFoundExceptions;
 import com.education.schoolautomation.repository.BranchRepository;
 import com.education.schoolautomation.service.BranchService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,18 @@ public class BranchServiceImpl implements BranchService {
         return toDtoList(repository.findAll());
     }
 
+    @Override
+    public BranchDto update(UUID branchId, BranchDto dto) {
+        Branch exitBranch= repository.findById(branchId).
+                orElseThrow(() -> new RecordNotFoundExceptions(4001, "Branch not found"));
+        exitBranch.setBranchName(dto.getBranchName());
+        exitBranch.setClassRoom(classroomService.toEntity(dto.getClassRoom()));
+        exitBranch.setClassTeacher(teacherService.toEntity(dto.getClassTeacher()));
+        exitBranch.setLessons(lessonService.toEntityList(dto.getLessons()));
+        exitBranch= repository.save(exitBranch);
+        return toDto(exitBranch);
+    }
+
 
     public List<BranchDto> toDtoList(List<Branch> entityList) {
         return entityList.stream()
@@ -72,7 +86,7 @@ public class BranchServiceImpl implements BranchService {
         Branch entity = new Branch();
         entity.setBranchName(dto.getBranchName());
         entity.setClassRoom(classroomService.findById(dto.getClassRoom().getClassRoomId()));
-        entity.setClassTeacher(teacherService.findById(dto.getClassTeacher().getIdentityId()));
+        entity.setClassTeacher(teacherService.findById(dto.getClassTeacher().getTeacherId()));
         return entity;
     }
 }

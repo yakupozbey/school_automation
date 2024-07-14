@@ -10,6 +10,7 @@ import com.education.schoolautomation.service.impl.ClassroomServiceImpl;
 import com.education.schoolautomation.service.impl.TeacherServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class BranchController {
 
 
     @PostMapping
+    @Transactional
     public BranchResponse create(@RequestBody BranchRequest request) {
         return toResponse(service.create(toDto(request)));
     }
@@ -36,6 +38,11 @@ public class BranchController {
     @DeleteMapping
     public void delete(@RequestParam(value = "branchId") UUID branchId) {
         service.delete(branchId);
+    }
+
+    @PutMapping
+    public BranchResponse update(@RequestParam(value = "branchId") UUID branchId, BranchRequest request){
+        return toResponse(service.update(branchId, toDto(request)));
     }
 
     @GetMapping
