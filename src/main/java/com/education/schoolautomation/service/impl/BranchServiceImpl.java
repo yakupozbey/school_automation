@@ -45,15 +45,24 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
+    @Transactional
     public BranchDto update(UUID branchId, BranchDto dto) {
-        Branch exitBranch= repository.findById(branchId).
+        Branch exitBranch = repository.findById(branchId).
                 orElseThrow(() -> new RecordNotFoundExceptions(4001, "Branch not found"));
         exitBranch.setBranchName(dto.getBranchName());
-        exitBranch.setClassRoom(classroomService.toEntity(dto.getClassRoom()));
-        exitBranch.setClassTeacher(teacherService.toEntity(dto.getClassTeacher()));
-        exitBranch.setLessons(lessonService.toEntityList(dto.getLessons()));
-        exitBranch= repository.save(exitBranch);
+        exitBranch.setClassRoom(classroomService.findById(dto.getClassRoom().getClassRoomId()));
+        exitBranch.setClassTeacher(teacherService.findById(dto.getClassTeacher().getTeacherId()));
+        //if (dto.getLessons() != null || !dto.getLessons().isEmpty()) {
+          //  exitBranch.setLessons(lessonService.toEntityList(dto.getLessons()));
+        //}
+
+        exitBranch = repository.save(exitBranch);
         return toDto(exitBranch);
+    }
+
+    public Branch findById(UUID branchId) {
+        return repository.findById(branchId).
+                orElseThrow(() -> new RecordNotFoundExceptions(4001, "Branch not found"));
     }
 
 

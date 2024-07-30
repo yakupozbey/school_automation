@@ -7,5 +7,6 @@ import java.util.UUID;
 
 public interface ClassRoomRepository extends JpaRepository<ClassRoom, UUID> {
     ClassRoom findByClassRoomId(UUID classRoomId);
+    ClassRoom findClassRoomByClassRoomId (UUID classRoomId);
     void deleteByClassRoomId(UUID classRoomId);
 }

@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface TeacherRepository extends JpaRepository<Teacher, UUID> {
     Teacher findByIdentityId(UUID identityId);
+    Teacher findTeacherByIdentityId (UUID identityId);
 }

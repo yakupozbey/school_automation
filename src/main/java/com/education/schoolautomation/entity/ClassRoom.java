@@ -22,7 +22,7 @@ public class ClassRoom {
 
     @ManyToOne
     @JoinColumn(name = "school_id")
-    @JsonBackReference//(value = "school-class-rooms")
+    @JsonBackReference(value = "school-class-rooms")
     private School school;
 
     @OneToMany(mappedBy = "classRoom", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

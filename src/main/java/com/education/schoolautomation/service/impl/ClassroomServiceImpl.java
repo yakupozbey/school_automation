@@ -65,7 +65,7 @@ public class ClassroomServiceImpl implements ClassRoomService {
 
 
     public ClassRoom findById(UUID classRoomId) {
-        return repository.findByClassRoomId(classRoomId);
+        return repository.findClassRoomByClassRoomId(classRoomId);
     }
 
 

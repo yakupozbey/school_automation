@@ -55,7 +55,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Transactional
     public Teacher findById(UUID identityId) {
-        return repository.findByIdentityId(identityId);
+        return repository.findTeacherByIdentityId(identityId);
     }
 
     public List<TeacherDto> toDtoList(List<Teacher> entityList) {

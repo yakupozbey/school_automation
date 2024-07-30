@@ -41,7 +41,7 @@ public class BranchController {
     }
 
     @PutMapping
-    public BranchResponse update(@RequestParam(value = "branchId") UUID branchId, BranchRequest request){
+    public BranchResponse update(@RequestParam(value = "branchId") UUID branchId, @RequestBody BranchRequest request){
         return toResponse(service.update(branchId, toDto(request)));
     }
 
@@ -60,7 +60,7 @@ public class BranchController {
         BranchResponse response = new BranchResponse();
         response.setBranchId(dto.getBranchId());
         response.setBranchName(dto.getBranchName());
-        response.setBranchId(dto.getClassRoom().getClassRoomId());
+        response.setClassRoomId(dto.getClassRoom().getClassRoomId());
         response.setClassTeacherId(dto.getClassTeacher().getTeacherId());
         response.setLessons(dto.getLessons());
         return response;

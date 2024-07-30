@@ -20,7 +20,7 @@ public class Branch {
     private UUID branchId;
     private String branchName;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_room_id")
     @JsonBackReference(value = "class-room-branches")
     private ClassRoom classRoom;
@@ -29,7 +29,7 @@ public class Branch {
     @JoinColumn(name = "teacher_id")
     private Teacher classTeacher;
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL) //, fetch = FetchType.LAZY
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference(value = "branch-lessons")
     private List<Lesson> lessons;
 }
