@@ -36,6 +36,7 @@ public class LessonController {
         return toResponse(service.create(toDto(request)));
     }
 
+
     @DeleteMapping
     public void delete(@RequestParam(value = "lessonId") UUID lessonId) {
         service.delete(lessonId);
