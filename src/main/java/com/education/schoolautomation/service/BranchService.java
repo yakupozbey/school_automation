@@ -11,4 +11,6 @@ public interface BranchService {
     void delete(UUID branchId);
 
     List<BranchDto> getAll();
+
+    BranchDto update(UUID branchId, BranchDto dto);
 }

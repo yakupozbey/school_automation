@@ -36,6 +36,7 @@ public class LessonController {
         return toResponse(service.create(toDto(request)));
     }
 
+
     @DeleteMapping
     public void delete(@RequestParam(value = "lessonId") UUID lessonId) {
         service.delete(lessonId);
@@ -57,9 +58,16 @@ public class LessonController {
         LessonResponse response = new LessonResponse();
         response.setLessonId(dto.getLessonId());
         response.setLessonName(dto.getLessonName());
-        response.setBranchId(dto.getBranch().getBranchId());
+        if (dto != null) {
+            response.setBranchId(dto.getBranch().getBranchId());
+        }
+
         response.setLessonTeacherId(dto.getLessonTeacher().getTeacherId());
-        response.setStudents(studentService.toEntityList(dto.getStudents()));
+
+        if (dto.getStudents() != null) {
+            response.setStudents(studentService.toEntityList(dto.getStudents()));
+        }
+
         return response;
     }
 

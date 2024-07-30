@@ -29,7 +29,7 @@ public class Lesson {
     @JoinColumn(name = "teacher_id")
     private Teacher lessonTeacher;
 
-    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)  //, fetch = FetchType.LAZY
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "lesson-students")
     private List<Student> students;
 }

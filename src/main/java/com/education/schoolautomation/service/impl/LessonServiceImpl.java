@@ -8,6 +8,7 @@ import com.education.schoolautomation.service.LessonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,7 @@ public class LessonServiceImpl implements LessonService {
 
 
     @Override
+    @Transactional
     public LessonDto create(LessonDto dto) {
         return toDto(repository.save(toEntity(dto)));
     }
@@ -58,6 +60,9 @@ public class LessonServiceImpl implements LessonService {
     }
 
     public List<Lesson> toEntityList(List<LessonDto> dtoList) {
+        if (dtoList == null) {
+            return Collections.emptyList();
+        }
         return dtoList.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());
@@ -70,14 +75,18 @@ public class LessonServiceImpl implements LessonService {
         dto.setLessonName(entity.getLessonName());
         dto.setBranch(branchService.toDto(entity.getBranch()));
         dto.setLessonTeacher(teacherService.toDto(entity.getLessonTeacher()));
-        dto.setStudents(studentService.toDtoList(entity.getStudents()));
+        if (entity.getStudents()!=null ){
+            dto.setStudents(studentService.toDtoList(entity.getStudents()));
+        }
+
         return dto;
     }
 
     public Lesson toEntity(LessonDto dto) {
         Lesson entity = new Lesson();
         entity.setLessonName(dto.getLessonName());
-        entity.setLessonTeacher(teacherService.findById(dto.getLessonTeacher().getIdentityId()));
+        entity.setBranch(branchService.findById(dto.getBranch().getBranchId()));
+        entity.setLessonTeacher(teacherService.findById(dto.getLessonTeacher().getTeacherId()));
         return entity;
     }
 }
