@@ -19,5 +19,5 @@ public class StudentDto {
     private String phoneNumber;
     private String address;
 
-    private LessonDto lesson;
+    private UUID lessonId;
 }

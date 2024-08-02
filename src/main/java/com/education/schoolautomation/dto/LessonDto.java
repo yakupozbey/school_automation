@@ -14,7 +14,7 @@ public class LessonDto {
     private UUID lessonId;
     private String lessonName;
 
-    private BranchDto branch;
+    private UUID branchId;
     private TeacherDto lessonTeacher;
     private List<StudentDto> students;
 }

@@ -1,14 +1,12 @@
 package com.education.schoolautomation.controller;
 
-import com.education.schoolautomation.dto.ManagerDto;
+import com.education.schoolautomation.mapper.ManagerMapper;
 import com.education.schoolautomation.request.ManagerRequest;
 import com.education.schoolautomation.response.ManagerResponse;
 import com.education.schoolautomation.service.ManagerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,10 +15,11 @@ import java.util.UUID;
 public class ManagerController {
 
     private final ManagerService service;
+    private final ManagerMapper managerMapper;
 
     @PostMapping
     public ManagerResponse create(@RequestBody ManagerRequest request) {
-        return toResponse(service.create(toDto(request)));
+        return managerMapper.toResponse(service.create(managerMapper.toDto(request)));
     }
 
     @DeleteMapping
@@ -29,37 +28,13 @@ public class ManagerController {
     }
 
     @PutMapping
-    public ManagerResponse update(@RequestParam(value = "managerId") UUID managerId, @RequestBody ManagerRequest request){
-        return toResponse(service.update(managerId, toDto(request)));
+    public ManagerResponse update(@RequestParam(value = "managerId") UUID managerId, @RequestBody ManagerRequest request) {
+        return managerMapper.toResponse(service.update(managerId, managerMapper.toDto(request)));
     }
 
     @GetMapping
     public ManagerResponse get(@RequestParam(value = "managerId") UUID managerId) {
-        return toResponse(service.get(managerId));
+        return managerMapper.toResponse(service.get(managerId));
     }
 
-    private ManagerResponse toResponse(ManagerDto dto) {
-        ManagerResponse response = new ManagerResponse();
-        response.setManagerId(dto.getManagerId());
-        response.setFullName(dto.getFullName());
-        response.setTckn(dto.getTckn());
-        response.setAge(dto.getAge());
-        response.setPhoneNumber(dto.getPhoneNumber());
-        response.setAddress(dto.getAddress());
-        response.setSsn(dto.getSsn());
-        response.setSalary(dto.getSalary());
-        return response;
-    }
-
-    private ManagerDto toDto(ManagerRequest request) {
-        ManagerDto dto = new ManagerDto();
-        dto.setFullName(request.getFullName());
-        dto.setTckn(request.getTckn());
-        dto.setAge(request.getAge());
-        dto.setPhoneNumber(request.getPhoneNumber());
-        dto.setAddress(request.getAddress());
-        dto.setSsn(request.getSsn());
-        dto.setSalary(request.getSalary());
-        return dto;
-    }
 }
