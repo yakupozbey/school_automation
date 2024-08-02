@@ -5,7 +5,6 @@ import com.education.schoolautomation.entity.Student;
 import com.education.schoolautomation.request.StudentRequest;
 import com.education.schoolautomation.response.StudentResponse;
 import com.education.schoolautomation.service.impl.LessonServiceImpl;
-import com.education.schoolautomation.service.impl.StudentServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

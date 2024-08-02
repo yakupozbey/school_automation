@@ -1,20 +1,15 @@
 package com.education.schoolautomation.controller;
 
-
-import com.education.schoolautomation.dto.LessonDto;
-import com.education.schoolautomation.dto.StudentDto;
 import com.education.schoolautomation.mapper.StudentMapper;
 import com.education.schoolautomation.request.StudentRequest;
 import com.education.schoolautomation.response.StudentResponse;
 import com.education.schoolautomation.service.StudentService;
-import com.education.schoolautomation.service.impl.LessonServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/students")
