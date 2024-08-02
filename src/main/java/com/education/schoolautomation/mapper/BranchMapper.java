@@ -7,7 +7,6 @@ import com.education.schoolautomation.entity.Branch;
 import com.education.schoolautomation.request.BranchRequest;
 import com.education.schoolautomation.response.BranchResponse;
 import com.education.schoolautomation.service.impl.ClassroomServiceImpl;
-import com.education.schoolautomation.service.impl.LessonServiceImpl;
 import com.education.schoolautomation.service.impl.TeacherServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,7 @@ public class BranchMapper {
 
     private final ClassRoomMapper classRoomMapper;
     private final TeacherMapper teacherMapper;
-    private final LessonServiceImpl lessonService;
+    private final LessonMapper lessonMapper;
 
     private final ClassroomServiceImpl classroomService;
     private final TeacherServiceImpl teacherService;
@@ -58,7 +57,7 @@ public class BranchMapper {
         dto.setBranchName(entity.getBranchName());
         dto.setClassRoom(classRoomMapper.toDto(entity.getClassRoom()));
         dto.setClassTeacher(teacherMapper.toDto(entity.getClassTeacher()));
-        dto.setLessons(lessonService.toDtoList(entity.getLessons()));
+        dto.setLessons(lessonMapper.toDtoList(entity.getLessons()));
         return dto;
     }
 
