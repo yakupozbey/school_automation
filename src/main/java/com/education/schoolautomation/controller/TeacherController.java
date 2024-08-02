@@ -1,6 +1,5 @@
 package com.education.schoolautomation.controller;
 
-import com.education.schoolautomation.mapper.TeacherMapper;
 import com.education.schoolautomation.request.TeacherRequest;
 import com.education.schoolautomation.response.TeacherResponse;
 import com.education.schoolautomation.service.TeacherService;
