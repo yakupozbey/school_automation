@@ -4,6 +4,7 @@ package com.education.schoolautomation.service.impl;
 import com.education.schoolautomation.dto.TeacherDto;
 import com.education.schoolautomation.entity.Teacher;
 import com.education.schoolautomation.exception.RecordNotFoundExceptions;
+import com.education.schoolautomation.mapper.TeacherMapper;
 import com.education.schoolautomation.repository.TeacherRepository;
 import com.education.schoolautomation.service.TeacherService;
 import lombok.RequiredArgsConstructor;
